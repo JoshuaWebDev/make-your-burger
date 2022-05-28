@@ -1,19 +1,21 @@
-# make_your_burger
+# Make Your Burger
 
-## Project setup
+![Make Your Burger](cover.png)
+
+## Configuração Inicial do Projeto
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Comando para compilar e atualizar página em  desenvolvimento
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Comando para compilar e minificar código para produção
 ```
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Para configurações personalizadas
+Veja [Configuration Reference](https://cli.vuejs.org/config/).
