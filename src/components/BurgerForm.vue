@@ -1,7 +1,7 @@
 <template>
     <div>
-        <small>Componente de mensagem</small>
-        <form id="burger-form">
+        <MessageComponent v-bind:message="message" v-show="message" />
+        <form id="burger-form" v-on:submit="createBurger">
             <div class="input-container">
                 <label for="name">Nome do Cliente</label>
                 <input type="text" id="name" name="name" v-model="name" placeholder="Digite o seu nome" />
@@ -43,8 +43,14 @@
 </template>
 
 <script>
+    import MessageComponent from './Message'
+
     export default {
         name: 'BurgerForm',
+
+        components: {
+            MessageComponent
+        },
 
         data: function() {
             return {
@@ -55,7 +61,6 @@
                 bread: null,
                 meat: null,
                 optionals: [],
-                status: "Solicitado",
                 message: null
             }
         },
@@ -68,6 +73,45 @@
                 this.breads = data.breads
                 this.meatTypes = data.meat
                 this.optionalData = data.optionals
+            },
+
+            clearMessage() {
+                this.message = ""
+            },
+
+            async createBurger(event) {
+                event.preventDefault()
+                
+                const dataForm = {
+                    name: this.name,
+                    bread: this.bread,
+                    meat: this.meat,
+                    optionals: Array.from(this.optionals),
+                    status: "Solicitado",
+                }
+
+                const dataJson = JSON.stringify(dataForm)
+
+                const request = await fetch('http://localhost:3000/burgers', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: dataJson
+                })
+
+                const response = await request.json()
+
+                // exibe uma mensagem  de confirmação do pedido
+                this.message = `Pedido de Nº ${response.id} realizado com sucesso!`
+
+                // deixa de exibir a mensagem de confirmação após 3 segundos
+                setTimeout(this.clearMessage, 3000)
+
+                console.log(response)
+
+                this.name = ""
+                this.bread = ""
+                this.meat = ""
+                this.optionals = ""
             }
         },
 
